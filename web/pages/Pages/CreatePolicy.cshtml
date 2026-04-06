@@ -1,0 +1,67 @@
+﻿@page
+@model SipernaWeb.Pages.CreatePolicyModel
+@{
+    ViewData["Title"] = "New Policy Registration";
+}
+
+<div class="container mt-5">
+    <div class="card shadow-lg border-0 col-md-9 mx-auto">
+        <div class="card-header bg-primary text-white p-3">
+            <h4 class="mb-0 fw-bold"><i class="bi bi-shield-plus me-2"></i>Create New Policy</h4>
+        </div>
+        <div class="card-body p-4">
+            <form method="post">
+                <div class="row mb-4">
+                    <div class="col-md-8">
+                        <label class="form-label fw-bold">Select Insurance Owner</label>
+                        <select asp-for="InsuranceOwnerID" asp-items="Model.OwnerList" class="form-select border-primary" required>
+                            <option value="">-- Choose Registered Owner --</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="form-label fw-bold">Agency ID</label>
+                        <input type="number" asp-for="AgencyID" class="form-control" placeholder="e.g., 1" required />
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold">Policy Type</label>
+                        <select asp-for="PolicyType" class="form-select" required>
+                            <option value="O">Outpatient</option>
+                            <option value="I">Inpatient</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold">Payment Frequency</label>
+                        <select asp-for="PaymentFrequency" class="form-select" required>
+                            <option value="Monthly">Monthly</option>
+                            <option value="Yearly">Yearly</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold">Start Date</label>
+                        <input type="date" asp-for="StartDate" class="form-control" required />
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold">End Date</label>
+                        <input type="date" asp-for="EndDate" class="form-control" required />
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <label class="form-label fw-bold">Renewal Information & Notes</label>
+                    <textarea asp-for="RenewalInfo" class="form-control" rows="2" placeholder="Enter policy notes here..."></textarea>
+                </div>
+
+                <div class="d-flex justify-content-between pt-4 border-top">
+                    <a href="/PolicyListModel" class="btn btn-outline-secondary px-4">Cancel</a>
+                    <button type="submit" class="btn btn-primary px-5 fw-bold shadow">Save Policy Record</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

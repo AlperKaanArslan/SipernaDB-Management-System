@@ -1,0 +1,69 @@
+﻿@page
+@model SipernaWeb.Pages.ClaimListModel
+@{
+    ViewData["Title"] = "Claim Management";
+}
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="fw-bold text-dark"><i class="bi bi-file-earmark-medical me-2"></i>Claim Requests</h2>
+        <a href="/AddClaim" class="btn btn-primary shadow-sm"><i class="bi bi-plus-lg me-1"></i> New Claim Request</a>
+    </div>
+
+    <div class="card shadow-sm border-0">
+        <div class="card-body p-0">
+            <table class="table table-hover align-middle mb-0 text-center">
+                <thead class="table-dark">
+                    <tr>
+                        <th class="text-start ps-4">Insured / Policy</th>
+                        <th>Event Date</th>
+                        <th>Pay Due Date</th>
+                        <th>Total Paid</th>
+                        <th>SGK Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (System.Data.DataRow row in Model.ClaimData.Rows)
+                    {
+                        <tr>
+                            <td class="text-start ps-4">
+                                <div class="fw-bold text-dark">@row["InsuredName"]</div>
+                                <small class="text-muted">Policy ID: #@row["PolicyID"]</small>
+                            </td>
+
+                            <td>@Convert.ToDateTime(row["EventDate"]).ToShortDateString()</td>
+
+                            <td class="text-muted">
+                                @(row["PayDueDate"] != DBNull.Value ? Convert.ToDateTime(row["PayDueDate"]).ToShortDateString() : "-")
+                            </td>
+
+                            <td class="fw-bold text-success">
+                                $@(row["TotalPaid"] != DBNull.Value ? string.Format("{0:N2}", row["TotalPaid"]) : "0.00")
+                            </td>
+
+                            <td>
+                                @{
+                                    var isSGK = row["SGKStatusFlag"] != DBNull.Value && Convert.ToBoolean(row["SGKStatusFlag"]);
+                                }
+                                <span class="badge @(isSGK ? "bg-info text-dark" : "bg-secondary")">
+                                    @(isSGK ? "SGK Covered" : "Private Only")
+                                </span>
+                            </td>
+
+                            <td>
+                                <div class="btn-group btn-group-sm">
+                                    <a href="/ClaimDetails?id=@row["ClaimID"]" class="btn btn-info text-white shadow-sm">Details</a>
+                                    <form method="post" asp-page-handler="Delete" asp-route-id="@row["ClaimID"]"
+                                          onsubmit="return confirm('Are you sure you want to delete this claim?');" style="display:inline;">
+                                        <button class="btn btn-outline-danger ms-1">Delete</button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

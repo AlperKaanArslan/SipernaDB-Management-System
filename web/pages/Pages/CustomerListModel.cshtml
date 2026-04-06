@@ -1,0 +1,92 @@
+﻿@page
+@model SipernaWeb.Pages.CustomerListModel
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="fw-bold text-primary">Customer Management</h1>
+        <a href="/AddCustomer" class="btn btn-success shadow-sm fw-bold">
+            <i class="bi bi-person-plus-fill me-1"></i> Add New Customer
+        </a>
+    </div>
+
+    <ul class="nav nav-tabs mb-4">
+        <li class="nav-item">
+            <a class="nav-link @(Model.Category == "O" ? "active fw-bold" : "")" asp-route-category="O">Insurance Owners</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link @(Model.Category == "F" ? "active fw-bold" : "")" asp-route-category="F">Family Members</a>
+        </li>
+    </ul>
+
+    <div class="card shadow-sm border-0">
+        <table class="table table-hover align-middle mb-0">
+            <thead class="table-light">
+                <tr>
+                    <th>ID</th>
+                    <th>Full Name</th>
+                    <th>Gender</th>
+                    <th>Age</th>
+                    @if (Model.Category == "O")
+                    {
+                        <th>Address</th>
+                        <th>Email</th>
+                    }
+                    @if (Model.Category == "F")
+                    {
+                        <th>Relation</th>
+                        <th>Status</th>
+                    }
+                    <th class="text-end pe-4">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (System.Data.DataRow row in Model.CustomerData.Rows)
+                {
+                    <tr>
+                        <td class="text-muted">#@row["CustomerID"]</td>
+                        <td><strong>@row["Name"] @row["Surname"]</strong></td>
+
+                        <td>
+                            @if (row["Gender"].ToString().Trim() == "M")
+                            {
+                                <i class="bi bi-gender-male text-primary"></i>
+                            }
+                            else
+                            {
+                                <i class="bi bi-gender-female text-danger"></i>
+                            }
+                        </td>
+                        <td><span class="badge bg-light text-dark border">@row["Age"]</span></td>
+
+                        @if (Model.Category == "O")
+                        {
+                            <td class="small text-truncate" style="max-width: 250px;">@row["Address"]</td>
+                            <td>@row["Email"]</td>
+                        }
+                        @if (Model.Category == "F")
+                        {
+                            <td><span class="badge bg-info">@row["RelationType"]</span></td>
+                            <td>@row["MaritalStatus"]</td>
+                        }
+
+                        <td class="text-end pe-3">
+                            <div class="d-flex justify-content-end gap-2">
+                                <a href="/EditCustomerModel?id=@row["CustomerID"]" class="btn btn-sm btn-outline-primary shadow-sm">
+                                    <i class="bi bi-pencil-square"></i> Edit
+                                </a>
+
+                                <form method="post" asp-page-handler="Delete" asp-route-id="@row["CustomerID"]"
+                                      onsubmit="return confirm('Are you sure?');"
+                                      style="display:inline;">
+                                    <button type="submit" class="btn btn-sm btn-outline-danger shadow-sm">
+                                        <i class="bi bi-trash"></i> Delete
+                                    </button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

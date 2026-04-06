@@ -1,0 +1,66 @@
+﻿@page
+@model SipernaWeb.Pages.AddClaimModel
+<div class="container mt-4">
+    <div class="card shadow border-0 mx-auto" style="max-width: 600px;">
+        <div class="card-header bg-primary text-white py-3">
+            <h5 class="mb-0"><i class="bi bi-plus-circle me-2"></i>Create New Claim</h5>
+        </div>
+        <div class="card-body p-4">
+            <form method="post">
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Select Policy & Insured</label>
+                    <select name="PolicyID" class="form-select" required onchange="updateCustomerId(this)">
+                        <option value="">-- Choose a Policy --</option>
+                        @foreach (System.Data.DataRow row in Model.Policies.Rows)
+                        {
+                            <option value="@row["PolicyID"]" data-customerid="@row["InsuranceOwnerID"]">
+                                Policy #@row["PolicyID"] - @row["InsuredName"]
+                            </option>
+                        }
+                    </select>
+                </div>
+
+                <input type="hidden" name="CustomerID" id="hiddenCustomerId">
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label fw-bold">Event Date</label>
+                        <input type="date" name="EventDate" class="form-control" required value="@DateTime.Now.ToString("yyyy-MM-dd")">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label fw-bold">Pay Due Date</label>
+                        <input type="date" name="PayDueDate" class="form-control">
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" name="SGKStatusFlag" id="sgkSwitch">
+                        <label class="form-check-label fw-bold" for="sgkSwitch">SGK Status Covered?</label>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label fw-bold">SGK Exclusion Reason (If applicable)</label>
+                    <textarea name="SGKExclusionReason" class="form-control" rows="2" placeholder="Why is this excluded from SGK?"></textarea>
+                </div>
+
+                <hr>
+                <div class="d-flex justify-content-between">
+                    <a href="/ClaimList" class="btn btn-light">Cancel</a>
+                    <button type="submit" class="btn btn-primary px-4 shadow-sm">Create File</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function updateCustomerId(selectElement) {
+            var selectedOption = selectElement.options[selectElement.selectedIndex];
+            var customerId = selectedOption.getAttribute('data-customerid');
+            document.getElementById('hiddenCustomerId').value = customerId;
+        }
+    </script>
+}

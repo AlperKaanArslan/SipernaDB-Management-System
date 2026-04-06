@@ -1,0 +1,56 @@
+﻿@page
+@model SipernaWeb.Pages.AgencyListModel
+@{
+    ViewData["Title"] = "Agency Management";
+}
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="fw-bold text-dark"><i class="bi bi-building me-2"></i>Agency Management</h2>
+        <a href="/AddAgency" class="btn btn-primary shadow-sm"><i class="bi bi-plus-lg me-1"></i> Register New Agency</a>
+    </div>
+
+    <div class="card shadow-sm border-0">
+        <div class="card-body p-0">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Agency Name</th>
+                        <th>Contact Info</th>
+                        <th>Tax Number</th>
+                        <th>Contract Dates</th>
+                        <th class="text-center">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (System.Data.DataRow row in Model.AgencyData.Rows)
+                    {
+                        <tr>
+                            <td><strong>@row["AgencyName"]</strong></td>
+                            <td>
+                                <div class="small">@row["Email"]</div>
+                                <div class="text-muted small">@row["PhoneNumber"]</div>
+                            </td>
+                            <td><code>@row["TaxNumber"]</code></td>
+                            <td>
+                                <span class="badge bg-light text-dark border">
+                                    @Convert.ToDateTime(row["StartDate"]).ToShortDateString() -
+                                    @(row["EndDate"] != DBNull.Value ? Convert.ToDateTime(row["EndDate"]).ToShortDateString() : "Active")
+                                </span>
+                            </td>
+                            <td class="text-center">
+                                <div class="btn-group btn-group-sm">
+                                    <a href="/EditAgency?id=@row["AgencyID"]" class="btn btn-outline-primary">Edit</a>
+                                    <form method="post" asp-page-handler="Delete" asp-route-id="@row["AgencyID"]"
+                                          onsubmit="return confirm('Are you sure you want to delete this agency?');" style="display:inline;">
+                                        <button class="btn btn-outline-danger">Delete</button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

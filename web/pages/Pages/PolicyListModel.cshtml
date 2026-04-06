@@ -1,0 +1,95 @@
+﻿@page
+@model SipernaWeb.Pages.PolicyListModel
+@{
+    ViewData["Title"] = "Policy Management";
+}
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="fw-bold text-dark">Policy Management</h2>
+        <a href="/CreatePolicy" class="btn btn-primary shadow-sm"><i class="bi bi-plus-lg me-1"></i> Create New Policy</a>
+    </div>
+
+    <div class="card shadow-sm border-0">
+        <div class="card-body p-0">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th>Insured Name</th>
+                        <th>Policy Type</th>
+                        <th>Dates (Start - End)</th>
+                        <th>Renewal Information</th>
+                        <th>Frequency</th>
+                        <th class="text-center">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (System.Data.DataRow row in Model.PolicyData.Rows)
+                    {
+                        <tr>
+                            <td><strong>@row["InsuredName"]</strong></td>
+                            <td><span class="badge bg-info text-dark">@row["PolicyType"]</span></td>
+                            <td><small>@Convert.ToDateTime(row["StartDate"]).ToShortDateString() - @Convert.ToDateTime(row["EndDate"]).ToShortDateString()</small></td>
+                            <td><div class="text-truncate" style="max-width: 200px;" title="@row["RenewalInfo"]">@row["RenewalInfo"]</div></td>
+                            <td>@row["PaymentFrequency"]</td>
+                            <td class="text-center">
+                                <div class="btn-group btn-group-sm">
+                                    <a href="/PolicyDetails/@row["PolicyID"]" class="btn btn-success text-white">
+                                        View
+                                        <span class="badge bg-primary ms-1" title="Family Members">
+                                            <i class="bi bi-people-fill"></i> @row["BeneficiaryCount"]
+                                        </span>
+                                        <span class="badge bg-white text-success ms-1" title="Medical Network">
+                                            <i class="bi bi-hospital"></i> @row["NetworkCount"]
+                                        </span>
+                                    </a>
+
+                                    <button class="btn btn-outline-info" onclick="showTechDetails(@row["PolicyID"], @row["AgencyID"], @row["InsuranceOwnerID"])">
+                                        IDs
+                                    </button>
+
+                                    <a href="/EditPolicyModel?id=@row["PolicyID"]" class="btn btn-outline-primary">Edit</a>
+
+                                    <form method="post" asp-page-handler="Delete" asp-route-id="@row["PolicyID"]" onsubmit="return confirm('Delete policy?');" style="display:inline;">
+                                        <button class="btn btn-outline-danger">Delete</button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="techModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content border-0 shadow">
+            <div class="modal-header bg-dark text-white">
+                <h5 class="modal-title fw-bold"><i class="bi bi-key-fill me-2"></i>Technical IDs (Locked)</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body p-4">
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item d-flex justify-content-between">
+                        <span class="text-muted">Policy Primary Key (ID):</span>
+                        <strong id="mPolicyID"></strong>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between">
+                        <span class="text-muted">Agency ID (FK):</span>
+                        <strong id="mAgencyID"></strong>
+                    </li>
+                    <li class="list-group-item d-flex justify-content-between">
+                        <span class="text-muted">Insurance Owner ID (FK):</span>
+                        <strong id="mOwnerID"></strong>
+                    </li>
+                </ul>
+                <div class="alert alert-warning mt-3 mb-0 small">
+                    <i class="bi bi-exclamation-triangle-fill me-1"></i> These keys are essential for database integrity and cannot be changed.
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

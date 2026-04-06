@@ -1,0 +1,79 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Home page";
+}
+
+<div class="text-center mt-5 mb-5">
+    <h1 class="display-4 fw-bold text-primary">Siperna Insurance Portal</h1>
+    <p class="lead text-muted">Welcome to the central management system. Please select a module to begin.</p>
+</div>
+
+<div class="container">
+    <div class="row g-4 justify-content-center">
+        <div class="col-md-4">
+            <div class="card h-100 shadow-sm border-0 p-3">
+                <div class="card-body text-center">
+                    <div class="mb-3 text-success">
+                        <i class="bi bi-people-fill" style="font-size: 2.5rem;"></i>
+                    </div>
+                    <h4 class="fw-bold">Customer Management</h4>
+                    <p class="text-muted small">Manage owner profiles and contact information.</p>
+                    <a href="/CustomerListModel" class="btn btn-success w-100 py-2 fw-bold">Go to Customers</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card h-100 shadow-sm border-0 p-3">
+                <div class="card-body text-center">
+                    <div class="mb-3 text-primary">
+                        <i class="bi bi-shield-check" style="font-size: 2.5rem;"></i>
+                    </div>
+                    <h4 class="fw-bold">Policy Management</h4>
+                    <p class="text-muted small">View policies and calculate coverage limits.</p>
+                    <a href="/PolicyListModel" class="btn btn-primary w-100 py-2 fw-bold">Go to Policies</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card h-100 shadow-sm border-0 p-3 border-top border-danger border-4">
+                <div class="card-body text-center">
+                    <div class="mb-3 text-danger">
+                        <i class="bi bi-file-earmark-medical-fill" style="font-size: 2.5rem;"></i>
+                    </div>
+                    <h4 class="fw-bold">Claim Management</h4>
+                    <p class="text-muted small">Process damage claims and monitor payout status.</p>
+                    <a href="/ClaimList" class="btn btn-danger w-100 py-2 fw-bold">Go to Claims</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card h-100 shadow-sm border-0 p-3">
+                <div class="card-body text-center">
+                    <div class="mb-3 text-warning">
+                        <i class="bi bi-hospital-fill" style="font-size: 2.5rem;"></i>
+                    </div>
+                    <h4 class="fw-bold">Provider Network</h4>
+                    <p class="text-muted small">Manage the medical network and service agreements.</p>
+                    <a href="/ProviderListModel" class="btn btn-warning w-100 py-2 fw-bold text-dark">Go to Network</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card h-100 shadow-sm border-0 p-3">
+                <div class="card-body text-center">
+                    <div class="mb-3" style="color: #6610f2;">
+                        <i class="bi bi-building-fill" style="font-size: 2.5rem;"></i>
+                    </div>
+                    <h4 class="fw-bold">Agency Management</h4>
+                    <p class="text-muted small">Manage insurance agencies and contract dates.</p>
+                    <a href="/AgencyList" class="btn btn-indigo w-100 py-2 fw-bold text-white" style="background-color: #6610f2;">Go to Agencies</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

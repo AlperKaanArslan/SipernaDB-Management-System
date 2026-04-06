@@ -1,0 +1,81 @@
+﻿@page
+@model SipernaWeb.Pages.ClaimDetailsModel
+@{
+    ViewData["Title"] = "Claim Payments";
+}
+
+<div class="container mt-4">
+    <div class="card shadow-sm border-0 mb-4 bg-dark text-white p-4 rounded">
+        <div class="d-flex justify-content-between align-items-center">
+            <div>
+                <h6 class="text-info text-uppercase mb-1">Claim Analysis</h6>
+                <h3 class="fw-bold mb-0">Claim #@Model.ClaimInfo["ClaimID"]</h3>
+                <small class="opacity-75">Customer: @Model.ClaimInfo["InsuredName"]</small>
+            </div>
+            <a href="/ClaimList" class="btn btn-outline-light btn-sm">Back to List</a>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-8">
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-primary text-white fw-bold">Payment History</div>
+                <div class="card-body">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr><th>Seq</th><th>Date</th><th class="text-end">Amount</th></tr>
+                        </thead>
+                        <tbody>
+                            @foreach (System.Data.DataRow row in Model.Payments.Rows)
+                            {
+                                <tr>
+                                    <td>#@row["PaymentSequenceNumber"]</td>
+                                    <td>@Convert.ToDateTime(row["PaymentDate"]).ToShortDateString()</td>
+                                    <td class="text-end fw-bold text-success">$@string.Format("{0:N2}", row["PaymentAmount"])</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card shadow-sm border-0 mb-4">
+                <div class="card-header bg-info text-dark fw-bold">SGK Status & Exclusion</div>
+                <div class="card-body">
+                    <form method="post" asp-page-handler="UpdateExclusion" asp-route-id="@Model.ClaimInfo["ClaimID"]">
+                        <div class="mb-3">
+                            <label class="form-label small fw-bold">Current Status:</label>
+                            <div>
+                                @{
+                                    var isSGK = Model.ClaimInfo["SGKStatusFlag"] != DBNull.Value && Convert.ToBoolean(Model.ClaimInfo["SGKStatusFlag"]);
+                                }
+                                <span class="badge @(isSGK ? "bg-success" : "bg-warning text-dark")">
+                                    @(isSGK ? "SGK Covered" : "Exclusion Applied")
+                                </span>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label small fw-bold">Exclusion Reason:</label>
+                            <textarea name="ExclusionReason" class="form-control form-control-sm" rows="3"
+                                      placeholder="Enter reason if excluded...">@Model.ClaimInfo["SGKExclusionReason"]</textarea>
+                        </div>
+                        <button type="submit" class="btn btn-info btn-sm w-100 text-white shadow-sm">Update Reason</button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="card shadow-sm border-0">
+                <div class="card-header bg-success text-white fw-bold">Add Payment</div>
+                <div class="card-body">
+                    <form method="post" asp-page-handler="AddPayment" asp-route-id="@Model.ClaimInfo["ClaimID"]">
+                        <input type="number" step="0.01" name="PaymentAmount" class="form-control mb-2" placeholder="Amount" required>
+                        <input type="date" name="PaymentDate" class="form-control mb-2" value="@DateTime.Now.ToString("yyyy-MM-dd")" required>
+                        <button type="submit" class="btn btn-success w-100 shadow-sm">Save Payment</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

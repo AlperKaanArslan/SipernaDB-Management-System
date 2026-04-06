@@ -1,0 +1,99 @@
+﻿@page
+@model SipernaWeb.Pages.AddCustomerModel
+@{
+    ViewData["Title"] = "Add New Customer";
+}
+
+<div class="container mt-5">
+    <div class="card shadow border-0 col-md-8 mx-auto">
+        <div class="card-header bg-success text-white p-3">
+            <h4 class="mb-0 fw-bold"><i class="bi bi-person-plus-fill me-2"></i>Add New Customer</h4>
+        </div>
+        <div class="card-body p-4">
+            <form method="post">
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label fw-bold">First Name</label>
+                        <input type="text" asp-for="Name" class="form-control" required />
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label fw-bold">Surname</label>
+                        <input type="text" asp-for="Surname" class="form-control" required />
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label fw-bold">Gender</label>
+                        <select asp-for="Gender" class="form-select">
+                            <option value="M">Male</option>
+                            <option value="F">Female</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label fw-bold">Customer Type</label>
+                        <select asp-for="CustomerType" id="typeSelector" class="form-select border-success" onchange="toggleFields()" required>
+                            <option value="O">Insurance Owner</option>
+                            <option value="F">Family Member</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <label class="form-label fw-bold">Birth Date</label>
+                    <input type="date" asp-for="BirthDate" class="form-control" required />
+                </div>
+
+                <div id="ownerFields" class="p-3 mb-3 bg-light rounded border-start border-primary border-4">
+                    <h6 class="text-primary fw-bold mb-3">Insurance Owner Specific Info</h6>
+                    <div class="mb-3">
+                        <label class="form-label">Address</label>
+                        <textarea asp-for="Address" class="form-control" rows="2"></textarea>
+                    </div>
+                    <div class="mb-0">
+                        <label class="form-label">Email Address</label>
+                        <input asp-for="Email" type="email" class="form-control" />
+                    </div>
+                </div>
+
+                <div id="familyFields" class="p-3 mb-3 bg-light rounded border-start border-info border-4" style="display:none;">
+                    <h6 class="text-info fw-bold mb-3">Family Member Specific Info</h6>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label class="form-label">Relation Type</label>
+                            <input asp-for="RelationType" class="form-control" placeholder="Eş, Çocuk vb." />
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Marital Status</label>
+                            <input asp-for="MaritalStatus" class="form-control" placeholder="Evli, Bekar" />
+                        </div>
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-between pt-4 border-top mt-4">
+                    <a href="/CustomerList" class="btn btn-outline-secondary px-4">Cancel</a>
+                    <button type="submit" class="btn btn-success px-5 fw-bold shadow">Save Customer</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Tipe göre alanları aç/kapat yapan fonksiyon
+        function toggleFields() {
+            const type = document.getElementById('typeSelector').value;
+            const ownerDiv = document.getElementById('ownerFields');
+            const familyDiv = document.getElementById('familyFields');
+
+            if (type === 'O') {
+                ownerDiv.style.display = 'block';
+                familyDiv.style.display = 'none';
+            } else {
+                ownerDiv.style.display = 'none';
+                familyDiv.style.display = 'block';
+            }
+        }
+    </script>
+}

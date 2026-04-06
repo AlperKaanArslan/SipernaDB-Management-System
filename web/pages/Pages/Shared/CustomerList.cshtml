@@ -1,0 +1,58 @@
+﻿@page
+@model SipernaWeb.Pages.CustomerListModel
+@{
+    ViewData["Title"] = "Customer List";
+}
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2><i class="fas fa-users"></i> Registered Customers</h2>
+        <a asp-page="/AddCustomer" class="btn btn-primary">+ Add New Customer</a>
+    </div>
+
+    <div class="card shadow">
+        <div class="card-body">
+            <table class="table table-hover table-striped">
+                <thead class="table-dark">
+                    <tr>
+                        <th>ID</th>
+                        <th>Type</th>
+                        <th>Name</th>
+                        <th>Surname</th>
+                        <th>Gender</th>
+                        <th>Birth Date</th>
+                        <th>Age</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.CustomerData != null && Model.CustomerData.Rows.Count > 0)
+                    {
+                        @foreach (System.Data.DataRow row in Model.CustomerData.Rows)
+                        {
+                            <tr>
+                                <td>@row["CustomerID"]</td>
+                                <td>@row["CustomerType"]</td>
+                                <td>@row["Name"]</td>
+                                <td>@row["Surname"]</td>
+                                <td>@row["Gender"]</td>
+                                <td>@Convert.ToDateTime(row["BirthDate"]).ToShortDateString()</td>
+                                <td><span class="badge bg-info">@row["Age"]</span></td>
+                                <td>
+                                    <button class="btn btn-sm btn-warning">Edit</button>
+                                    <button class="btn btn-sm btn-danger">Delete</button>
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="8" class="text-center">No records found.</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

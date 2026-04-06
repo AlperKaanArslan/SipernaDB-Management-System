@@ -1,0 +1,46 @@
+﻿@page
+@model SipernaWeb.Pages.EditAgencyModel
+<div class="container mt-4">
+    <div class="card shadow border-0 mx-auto" style="max-width: 600px;">
+        <div class="card-header bg-success text-white py-3">
+            <h5 class="mb-0">Update Agency: @Model.AgencyRow["AgencyName"]</h5>
+        </div>
+        <div class="card-body p-4">
+            <form method="post">
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Agency Name</label>
+                    <input type="text" name="AgencyName" class="form-control" value="@Model.AgencyRow["AgencyName"]" required>
+                </div>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label fw-bold">Tax Number</label>
+                        <input type="text" name="TaxNumber" class="form-control" value="@Model.AgencyRow["TaxNumber"]" required maxlength="10">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label fw-bold">Phone Number</label>
+                        <input type="tel" name="PhoneNumber" class="form-control" value="@Model.AgencyRow["PhoneNumber"]">
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Email Address</label>
+                    <input type="email" name="Email" class="form-control" value="@Model.AgencyRow["Email"]">
+                </div>
+                <div class="row">
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label fw-bold">Start Date</label>
+                        <input type="date" name="StartDate" class="form-control" required value="@Convert.ToDateTime(Model.AgencyRow["StartDate"]).ToString("yyyy-MM-dd")">
+                    </div>
+                    <div class="col-md-6 mb-3">
+                        <label class="form-label fw-bold">End Date</label>
+                        <input type="date" name="EndDate" class="form-control" value="@(Model.AgencyRow["EndDate"] != DBNull.Value ? Convert.ToDateTime(Model.AgencyRow["EndDate"]).ToString("yyyy-MM-dd") : "")">
+                    </div>
+                </div>
+                <hr>
+                <div class="d-flex justify-content-between">
+                    <a href="/AgencyList" class="btn btn-light">Cancel</a>
+                    <button type="submit" class="btn btn-success px-4">Update Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

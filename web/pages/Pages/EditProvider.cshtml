@@ -1,0 +1,133 @@
+﻿@page
+@model SipernaWeb.Pages.EditProviderModel
+@{
+    ViewData["Title"] = "Edit Provider";
+}
+
+<div class="container mt-5">
+    <div class="card shadow border-0 col-md-8 mx-auto">
+        <div class="card-header bg-primary text-white p-3 d-flex align-items-center">
+            <h4 class="mb-0 fw-bold"><i class="bi bi-pencil-square me-2"></i>Edit Provider Profile</h4>
+        </div>
+        <div class="card-body p-4">
+            <form method="post">
+                <input type="hidden" asp-for="ProviderID" />
+                <input type="hidden" asp-for="ProviderType" />
+
+                <div class="mb-3">
+                    <label class="form-label fw-bold text-secondary">Institution Name</label>
+                    <input type="text" asp-for="InstitutionName" class="form-control form-control-lg border-primary" required />
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label fw-bold text-secondary">Full Address</label>
+                    <textarea asp-for="Address" class="form-control" rows="3" required></textarea>
+                </div>
+
+                <hr class="my-4">
+
+                <h6 class="text-primary fw-bold mb-3"><i class="bi bi-person-lines-fill me-2"></i>Contact Management</h6>
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold small text-muted">Email Addresses</label>
+                        <div id="emailContainer">
+                            @foreach (var email in Model.Emails)
+                            {
+                                <div class="input-group mb-2 contact-item">
+                                    <input type="email" name="Emails" value="@email" class="form-control border-primary" />
+                                    <button type="button" class="btn btn-outline-danger" onclick="this.closest('.contact-item').remove()"><i class="bi bi-trash"></i></button>
+                                </div>
+                            }
+                        </div>
+                        <button type="button" class="btn btn-sm btn-outline-primary" onclick="addInput('emailContainer', 'Emails', 'email')">+ Add Email</button>
+                    </div>
+                    <div class="col-md-6 mt-3 mt-md-0">
+                        <label class="form-label fw-bold small text-muted">Phone Numbers</label>
+                        <div id="phoneContainer">
+                            @foreach (var phone in Model.Phones)
+                            {
+                                <div class="input-group mb-2 contact-item">
+                                    <input type="tel" name="Phones" value="@phone" class="form-control border-success" />
+                                    <button type="button" class="btn btn-outline-danger" onclick="this.closest('.contact-item').remove()"><i class="bi bi-trash"></i></button>
+                                </div>
+                            }
+                        </div>
+                        <button type="button" class="btn btn-sm btn-outline-success" onclick="addInput('phoneContainer', 'Phones', 'tel')">+ Add Phone</button>
+                    </div>
+                </div>
+
+                <hr class="my-4">
+
+                <h6 class="text-primary fw-bold mb-3">Specialized Information</h6>
+
+                @if (Model.ProviderType == "H")
+                {
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-bold">Bed Capacity</label>
+                            <input type="number" asp-for="BedCapacity" class="form-control" />
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-bold">Discount Rate (%)</label>
+                            <input type="number" step="0.01" asp-for="DiscountRate" class="form-control" />
+                        </div>
+                    </div>
+                }
+                else if (Model.ProviderType == "C")
+                {
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Specialization Area</label>
+                        <input type="text" asp-for="SpecializationArea" class="form-control" placeholder="e.g., Dental, Cardiology" />
+                    </div>
+                }
+                else if (Model.ProviderType == "L")
+                {
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label fw-bold">Response Time (Hours)</label>
+                            <input type="number" asp-for="ResponseTimeHours" class="form-control" />
+                        </div>
+                        <div class="col-md-6 mt-4">
+                            <div class="form-check">
+                                <input type="checkbox" asp-for="HasHomeSampling" class="form-check-input" id="labCheck">
+                                <label class="form-check-label fw-bold" for="labCheck">Home Sampling Available</label>
+                            </div>
+                        </div>
+                    </div>
+                }
+                else if (Model.ProviderType == "P")
+                {
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">Pharmacist Full Name</label>
+                        <input type="text" asp-for="PharmacistFullName" class="form-control" />
+                    </div>
+                }
+
+                <div class="mb-4 mt-4 form-check p-3 bg-light border rounded shadow-sm">
+                    <div class="ms-4">
+                        <input type="checkbox" asp-for="ContractStatus" class="form-check-input" id="contractCheck">
+                        <label class="form-check-label fw-bold" for="contractCheck">Active Siperna Agreement</label>
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-between pt-3 border-top">
+                    <a href="/ProviderListModel?category=@Model.ProviderType" class="btn btn-outline-secondary px-4">Cancel</a>
+                    <button type="submit" class="btn btn-primary px-5 fw-bold shadow">Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function addInput(containerId, name, type) {
+            const container = document.getElementById(containerId);
+            const div = document.createElement('div');
+            div.className = 'input-group mb-2 contact-item';
+            div.innerHTML = `<input type="${type}" name="${name}" class="form-control" />
+                             <button type="button" class="btn btn-outline-danger" onclick="this.closest('.contact-item').remove()"><i class="bi bi-trash"></i></button>`;
+            container.appendChild(div);
+        }
+    </script>
+}

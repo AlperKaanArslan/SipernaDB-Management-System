@@ -1,0 +1,66 @@
+﻿@page
+@model SipernaWeb.Pages.EditCustomerModel
+
+<div class="container mt-4">
+    <div class="card shadow-sm border-0">
+        <div class="card-header bg-dark text-white fw-bold">
+            <i class="bi bi-pencil-square me-2"></i>Edit Profile: @Model.Name @Model.Surname
+        </div>
+        <div class="card-body p-4">
+            <form method="post">
+                <input type="hidden" asp-for="CustomerID" />
+                <input type="hidden" asp-for="CustomerType" />
+
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold">Name</label>
+                        <input asp-for="Name" class="form-control" />
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label fw-bold">Surname</label>
+                        <input asp-for="Surname" class="form-control" />
+                    </div>
+                </div>
+
+                @* --- FAMILY MEMBER BÖLÜMÜ ('F') --- *@
+                @if (Model.CustomerType == "F")
+                {
+                    <div class="p-3 bg-light rounded border-start border-info border-4 shadow-sm">
+                        <h6 class="text-info fw-bold mb-3"><i class="bi bi-people-fill me-2"></i>Family Member Information</h6>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold text-muted">Relation Type</label>
+                                <input asp-for="RelationType" class="form-control" />
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label fw-bold text-muted">Marital Status</label>
+                                <input asp-for="MaritalStatus" class="form-control" />
+                            </div>
+                        </div>
+                    </div>
+                }
+
+                @* --- INSURANCE OWNER BÖLÜMÜ ('O') --- *@
+                @if (Model.CustomerType == "O")
+                {
+                    <div class="p-3 bg-light rounded border-start border-primary border-4 shadow-sm">
+                        <h6 class="text-primary fw-bold mb-3"><i class="bi bi-geo-alt-fill me-2"></i>Insurance Owner Information</h6>
+                        <div class="mb-3">
+                            <label class="form-label fw-bold text-muted">Address</label>
+                            <textarea asp-for="Address" class="form-control" rows="2"></textarea>
+                        </div>
+                        <div class="mb-0">
+                            <label class="form-label fw-bold text-muted">Email Address</label>
+                            <input asp-for="Email" class="form-control" type="email" />
+                        </div>
+                    </div>
+                }
+
+                <div class="text-end mt-4">
+                    <a href="/CustomerListModel" class="btn btn-outline-secondary me-2">Cancel</a>
+                    <button type="submit" class="btn btn-success px-4 fw-bold">Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
